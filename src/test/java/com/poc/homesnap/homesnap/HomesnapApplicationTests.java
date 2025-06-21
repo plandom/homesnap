@@ -1,11 +1,11 @@
 package com.poc.homesnap.homesnap;
 
-import com.poc.homesnap.homesnap.model.HousePlan;
-import com.poc.homesnap.homesnap.model.ParcelData;
-import com.poc.homesnap.homesnap.model.ZoningData;
-import com.poc.homesnap.homesnap.model.rhino.FrontendMeshResponse;
-import com.poc.homesnap.homesnap.service.impl.GeoPortalServiceImpl;
-import com.poc.homesnap.homesnap.service.impl.MockVisualizationService;
+import com.poc.homesnap.homesnap.design.model.HousePlan;
+import com.poc.homesnap.homesnap.design.model.ParcelData;
+import com.poc.homesnap.homesnap.design.model.ZoningData;
+import com.poc.homesnap.homesnap.design.model.rhino.FrontendMeshResponse;
+import com.poc.homesnap.homesnap.design.service.impl.GeoPortalServiceImpl;
+import com.poc.homesnap.homesnap.design.service.impl.MockVisualizationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
