@@ -1,11 +1,8 @@
 package com.poc.homesnap.homesnap;
 
-import com.poc.homesnap.homesnap.design.model.HousePlan;
 import com.poc.homesnap.homesnap.design.model.ParcelData;
 import com.poc.homesnap.homesnap.design.model.ZoningData;
-import com.poc.homesnap.homesnap.design.model.rhino.FrontendMeshResponse;
 import com.poc.homesnap.homesnap.design.service.impl.GeoPortalServiceImpl;
-import com.poc.homesnap.homesnap.design.service.impl.MockVisualizationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -19,14 +16,6 @@ class HomesnapApplicationTests {
 
     @Test
     void contextLoads() {
-    }
-
-    @Test
-    void testVisulaization() {
-        MockVisualizationService mockVisualizationService = new MockVisualizationService();
-        FrontendMeshResponse frontendMeshResponse = mockVisualizationService.generateVisualization(new HousePlan());
-        System.out.println(frontendMeshResponse);
-        assertNotNull(frontendMeshResponse);
     }
 
     @Test

@@ -21,7 +21,20 @@ configurations {
 
 repositories {
 	mavenCentral()
-	mavenLocal()
+	maven {
+		url = uri("https://maven.pkg.github.com/plandom/ez-common")
+		credentials {
+			username = findProperty("gpr.user") ?: System.getenv("USERNAME")
+			password = findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+		}
+	}
+	maven {
+		url = uri("https://maven.pkg.github.com/plandom/ez-iam")
+		credentials {
+			username = findProperty("gpr.user") ?: System.getenv("USERNAME")
+			password = findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+		}
+	}
 }
 
 dependencies {
@@ -34,7 +47,7 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 	implementation 'org.locationtech.jts:jts-core:1.19.0'
 	implementation 'org.locationtech.proj4j:proj4j:1.1.0'
-	implementation("com.tei:ez-iam:0.0.1-SNAPSHOT")
+	implementation("com.tei:ez-iam:0.0.3")
 	implementation("com.tei:ez-payment:0.0.1-SNAPSHOT")
 	implementation("com.tei:ez-common:0.0.1-SNAPSHOT")
 	compileOnly 'org.projectlombok:lombok'

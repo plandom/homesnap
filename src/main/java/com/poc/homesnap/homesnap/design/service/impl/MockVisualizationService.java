@@ -1,17 +1,16 @@
 package com.poc.homesnap.homesnap.design.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.poc.homesnap.homesnap.design.model.HousePlan;
+import com.poc.homesnap.homesnap.coin.UserBalance;
+import com.poc.homesnap.homesnap.coin.UserBalanceRepository;
 import com.poc.homesnap.homesnap.design.model.rhino.FrontendMeshResponse;
 import com.poc.homesnap.homesnap.design.model.rhino.MeshResponse;
 import com.poc.homesnap.homesnap.design.model.rhino.MeshResponse.MeshData;
-import com.poc.homesnap.homesnap.design.repository.HousePlanRepository;
 import com.poc.homesnap.homesnap.design.service.VisualizationService;
 import com.tei.eziam.iam.domain.User;
 import com.tei.eziam.iam.domain.UserId;
 import com.tei.eziam.iam.domain.UserRepository;
-import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -21,21 +20,13 @@ import java.util.List;
 @Service
 public class MockVisualizationService implements VisualizationService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private HousePlanRepository housePlanRepository;
+    private final UserBalanceRepository userBalance;
 
-    @Override
-    @SneakyThrows
-    public FrontendMeshResponse generateVisualization(HousePlan housePlan) {
-        // call rhino
-        MeshResponse meshResponse = loadMeshResponse("rhino-mock.json");
-        System.out.println(meshResponse.values());
-
-        // Mock implementation that returns a simple JSON structure
-        return mapToFrontendMesh(meshResponse);
+    public MockVisualizationService(UserRepository userRepository, UserBalanceRepository userBalance) {
+        this.userRepository = userRepository;
+        this.userBalance = userBalance;
     }
 
     public FrontendMeshResponse mapToFrontendMesh(MeshResponse meshResponse) {
@@ -70,13 +61,23 @@ public class MockVisualizationService implements VisualizationService {
     }
 
     @Override
+    @Transactional
     public boolean canGenerateMoreVisualizations(UserId userId) {
         User user = userRepository.findById(userId);
         if (user == null) {
             throw new RuntimeException("User not found");
         }
-        long currentPlanCount = housePlanRepository.countByUser(user);
 
-        return currentPlanCount < 3;
+        UserBalance userBalanceByUserId = userBalance.findUserBalanceByUserId(userId);
+        if (userBalanceByUserId == null) {
+            throw new RuntimeException("User balance not found");
+        }
+
+        int balance = userBalanceByUserId.getBalance();
+        if (balance < 30) {
+            throw new IllegalStateException("Unsufficent balance");
+        }
+
+        return true;
     }
 } 

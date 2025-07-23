@@ -37,4 +37,17 @@ public class CoinService {
         transactionRepo.save(tx);
         log.info("Deducted coins for user {} with amount {}", userId, amount);
     }
+
+    public int getCoins(UserId userId) {
+        UserBalance userBalance = balanceRepo.findById(userId)
+            .orElseThrow(() -> new RuntimeException("User not found"));
+
+        int balance = userBalance.getBalance();
+
+        if (balance < 0) {
+            throw new IllegalStateException("Balance is negative");
+        }
+
+        return balance;
+    }
 }
